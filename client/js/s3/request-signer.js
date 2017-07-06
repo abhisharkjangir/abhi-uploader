@@ -134,21 +134,25 @@ qq.s3.RequestSigner = function(o) {
             getCanonicalRequest: function(signatureSpec) {
                 return qq.format("{}\n{}\n{}\n{}\n{}\n{}",
                     signatureSpec.method,
-                    v4.getCanonicalUri(signatureSpec.endOfUrl),
+                    v4.getCanonicalUri(signatureSpec.endOfUrl,signatureSpec.bucket),
                     v4.getCanonicalQueryString(signatureSpec.endOfUrl),
                     signatureSpec.headersStr || "\n",
                     v4.getSignedHeaders(signatureSpec.headerNames),
                     signatureSpec.hashedContent);
             },
 
-            getCanonicalUri: function(endOfUri) {
+            getCanonicalUri: function(endOfUri,bucket) {
                 var path = endOfUri,
                     queryParamIdx = endOfUri.indexOf("?");
 
                 if (queryParamIdx > 0) {
                     path = endOfUri.substr(0, queryParamIdx);
                 }
-                return escape("/" + "dauble-bulk-upload" + "/" + decodeURIComponent(path));
+                if (bucket) {
+                  return escape("/" + bucket + "/" + decodeURIComponent(path));
+                }else {
+                  return "/" + path;
+                }
             },
 
             getEncodedHashedPayload: function(body) {
