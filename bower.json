@@ -33,7 +33,7 @@
     "widget"
   ],
   "homepage": "https://github.com/abhisharkjangir/abhi-uploader",
-  "private": true,
+  "private": false,
   "ignore": [
     "node_modules",
     "bower_components",
